@@ -1,0 +1,68 @@
+ExeStack:
+(int a;(a=(2 + (3 * 5));(int b;(b=(a - ((4 / 0) + 7));print(b)))))
+SymTable:
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+int a
+(a=(2 + (3 * 5));(int b;(b=(a - ((4 / 0) + 7));print(b))))
+SymTable:
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+(a=(2 + (3 * 5));(int b;(b=(a - ((4 / 0) + 7));print(b))))
+SymTable:
+a --> 0
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+a=(2 + (3 * 5))
+(int b;(b=(a - ((4 / 0) + 7));print(b)))
+SymTable:
+a --> 0
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+(int b;(b=(a - ((4 / 0) + 7));print(b)))
+SymTable:
+a --> 17
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+int b
+(b=(a - ((4 / 0) + 7));print(b))
+SymTable:
+a --> 17
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+(b=(a - ((4 / 0) + 7));print(b))
+SymTable:
+a --> 17
+b --> 0
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
+ExeStack:
+b=(a - ((4 / 0) + 7))
+print(b)
+SymTable:
+a --> 17
+b --> 0
+Out:
+FileTable:
+(empty)
+----------------------------------------------------
