@@ -2,6 +2,7 @@ package model.expression;
 
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
+import model.state.HeapRefInterface;
 import model.value.Value;
 
 public class ValueExpression implements Expression{
@@ -12,7 +13,7 @@ public class ValueExpression implements Expression{
     }
 
     @Override
-    public Value eval(SymbolTableInterface<String, Value> table) throws ToyLanguageException {
+    public Value eval(SymbolTableInterface<String, Value> table, HeapRefInterface<Integer, Value> heap) throws ToyLanguageException {
         return value;
     }
 

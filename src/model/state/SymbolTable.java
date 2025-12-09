@@ -50,7 +50,7 @@ public class SymbolTable<T2, T3> implements SymbolTableInterface<T2, T3>{
 
     @Override
     public String toString(){
-        StringBuilder stringBuilder = new StringBuilder("Symbol Table: ");
+        StringBuilder stringBuilder = new StringBuilder("Symbol Table: \n");
         Set<T2> setOfKeysSymbolTable = symbolTable.keySet();
         Iterator<T2> iterator = setOfKeysSymbolTable.iterator();
         while (iterator.hasNext()){

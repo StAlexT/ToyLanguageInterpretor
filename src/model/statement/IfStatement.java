@@ -24,7 +24,7 @@ public class IfStatement implements Statement{
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value cond = expression.eval(state.getSymbolTable());
+        Value cond = expression.eval(state.getSymbolTable(), state.getHeap());
         if (!(cond.getType().equals(new BoolType())))
             throw new ToyLanguageException("Condition not boolean");
         boolean val = ((BooleanNumber) cond).getVal();

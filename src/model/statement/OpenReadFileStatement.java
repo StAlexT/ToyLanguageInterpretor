@@ -20,7 +20,7 @@ public class OpenReadFileStatement implements Statement{ //opens the file and ad
 
     @Override
     public ProgramState execute(ProgramState state) throws ToyLanguageException {
-        Value val = expression.eval(state.getSymbolTable());
+        Value val = expression.eval(state.getSymbolTable(), state.getHeap());
         if (!(val.getType() instanceof StringType))
             throw new ToyLanguageException("Expression is not a string.");
 

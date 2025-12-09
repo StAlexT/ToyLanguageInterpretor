@@ -13,14 +13,16 @@ public class ProgramState {
     OutputInterface<Value> output;
     Statement originalProgram;
     FileTableInterface<StringValue, BufferedReader> fileTable;
+    HeapRefInterface<Integer, Value> refTable;
 
-    public ProgramState(ExecutionStackInterface<Statement> exeStack, SymbolTableInterface<String, Value> symTable, OutputInterface<Value> out, FileTable<StringValue, BufferedReader> theFileTable, Statement originalProg){
+    public ProgramState(ExecutionStackInterface<Statement> exeStack, SymbolTableInterface<String, Value> symTable, OutputInterface<Value> out, FileTable<StringValue, BufferedReader> theFileTable, HeapRef<Integer, Value> refTable, Statement originalProg){
         executionStack = exeStack;
         symbolTable = symTable;
         this.output = out;
         originalProgram = originalProg.deepCopy();
         exeStack.push(originalProg); //pushes so stack not empty anymore
         this.fileTable = theFileTable;
+        this.refTable = refTable;
     }
 
     public FileTableInterface<StringValue, BufferedReader> getFileTable() {
@@ -37,7 +39,9 @@ public class ProgramState {
 
     public OutputInterface<Value> getOutput(){
         return output;
-    }
+    };
+
+    public HeapRefInterface<Integer, Value> getHeap() { return refTable;};
 
     public void setExecutionStack(ExecutionStackInterface<Statement> stack){
         this.executionStack = stack;
@@ -55,7 +59,8 @@ public class ProgramState {
     public String toString(){
         return  executionStack.toString() + "\n" +
                  symbolTable.toString() + "\n" +
-                 output.toString() + "\n";
+                 output.toString() + "\n" +
+                refTable.toString() + "\n";
     }
 
 }

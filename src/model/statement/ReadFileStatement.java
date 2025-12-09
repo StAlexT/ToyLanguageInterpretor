@@ -29,7 +29,7 @@ public class ReadFileStatement implements Statement { //reads one line of a file
         if (!(varVal.getType().equals(new IntType())))
             throw new ToyLanguageException(variableName + " is not of type int");
 
-        Value fileVal = expression.eval(state.getSymbolTable());
+        Value fileVal = expression.eval(state.getSymbolTable(), state.getHeap());
         if (!(fileVal instanceof StringValue))
             throw new ToyLanguageException("Expression is not a string value");
 

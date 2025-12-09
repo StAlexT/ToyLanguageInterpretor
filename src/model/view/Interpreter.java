@@ -8,6 +8,7 @@ import model.repository.RepositoryInterface;
 import model.state.*;
 import model.statement.*;
 import model.type.IntType;
+import model.type.RefType;
 import model.type.StringType;
 import model.value.IntegerValue;
 import model.type.BoolType;
@@ -65,6 +66,7 @@ public class Interpreter {
                 new SymbolTable<>(),
                 new Output<>(),
                 new FileTable<>(),
+                new HeapRef<>(),
                 ex1
         );
         RepositoryInterface repo1 = new Repository("log1.txt");
@@ -119,6 +121,7 @@ public class Interpreter {
                 new SymbolTable<>(),
                 new Output<>(),
                 new FileTable<>(),
+                new HeapRef<>(),
                 ex2
         );
         RepositoryInterface repo2 = new Repository("log2.txt");
@@ -157,6 +160,7 @@ public class Interpreter {
                 new SymbolTable<>(),
                 new Output<>(),
                 new FileTable<>(),
+                new HeapRef<>(),
                 ex3
         );
         RepositoryInterface repo3 = new Repository("log3.txt");
@@ -194,6 +198,7 @@ public class Interpreter {
                 new SymbolTable<>(),
                 new Output<>(),
                 new FileTable<>(),
+                new HeapRef<>(),
                 ex4
         );
         RepositoryInterface repo4 = new Repository("log4.txt");
@@ -236,12 +241,206 @@ public class Interpreter {
                 new SymbolTable<>(),
                 new Output<>(),
                 new FileTable<>(),
+                new HeapRef<>(),
                 ex5
         );
 
         RepositoryInterface repoIfRelational = new Repository("log5.txt");
         repoIfRelational.addProgramState(prg5);
         Controller ctr5 = new Controller(repoIfRelational);
+        //int v; v=4; (while (v>0) print(v);v=v-1);print(v)
+
+        Statement ex6 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new IntType()),
+                new CompoundStatement(
+                        new AssignmentStatement("v", new ValueExpression(new IntegerValue(4))),
+                        new CompoundStatement(
+                                new WhileStatement(
+                                        new RelationalExpression(
+                                                new VariableExpression("v"),
+                                                new ValueExpression(new IntegerValue(0)),
+                                                ">"
+                                        ),
+                                        new CompoundStatement(
+                                                new PrintStatement(new VariableExpression("v")),
+                                                new AssignmentStatement(
+                                                        "v",
+                                                        new ArithmeticExpression(
+                                                                new VariableExpression("v"),
+                                                                new ValueExpression(new IntegerValue(1)),
+                                                                2
+                                                        )
+                                                )
+                                        )
+                                ),
+                                new PrintStatement(new VariableExpression("v"))
+                        )
+                )
+        );
+
+        ProgramState prg6 = new ProgramState(
+                new ExecutionStack<>(),
+                new SymbolTable<>(),
+                new Output<>(),
+                new FileTable<>(),
+                new HeapRef<>(),
+                ex6
+        );
+        RepositoryInterface repo6 = new Repository("log6.txt");
+        repo6.addProgramState(prg6);
+        Controller ctr6 = new Controller(repo6);
+        //Ref int v;new(v,20);Ref Ref int a; new(a,v);print(v);print(a)
+
+        Statement ref1 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new RefType(new IntType())),
+                new CompoundStatement(
+                        new NewStatement(
+                                "v",
+                                new ValueExpression(new IntegerValue(20))
+                        ),
+                        new CompoundStatement(
+                                new VariableDeclarationStatement("a", new RefType(new RefType( new IntType()))),
+                                new CompoundStatement(
+                                        new NewStatement("a", new VariableExpression("v")),
+                                        new CompoundStatement(
+                                                new PrintStatement(new VariableExpression("v")),
+                                                new PrintStatement(new VariableExpression("a"))
+                                        )
+                                )
+                        )
+                )
+        );
+
+        ProgramState refState1 = new ProgramState(
+                new ExecutionStack<>(),
+                new SymbolTable<>(),
+                new Output<>(),
+                new FileTable<>(),
+                new HeapRef<>(),
+                ref1
+        );
+
+        RepositoryInterface repo7 = new Repository("ref1.txt");
+        repo7.addProgramState(refState1);
+        Controller ctr7 = new Controller(repo7);
+
+        //Ref int v;new(v,20);Ref Ref int a; new(a,v);print(rH(v));print(rH(rH(a))+5)
+        Statement ref2 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new RefType(new IntType())),
+                new CompoundStatement(
+                        new NewStatement(
+                                "v",
+                                new ValueExpression(new IntegerValue(20))
+                        ),
+                        new CompoundStatement(
+                                new VariableDeclarationStatement("a", new RefType(new RefType( new IntType()))),
+                                new CompoundStatement(
+                                        new NewStatement("a", new VariableExpression("v")),
+                                        new CompoundStatement(
+                                                new PrintStatement(new ReadingHeapExpression(new VariableExpression("v"))),
+                                                new PrintStatement(
+                                                        new ArithmeticExpression(
+                                                                new ReadingHeapExpression(
+                                                                        new ReadingHeapExpression(
+                                                                            new VariableExpression("a")
+                                                                        )
+                                                                ),
+                                                                new ValueExpression(
+                                                                        new IntegerValue(5)
+                                                                ),
+                                                                1
+                                                        )
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+
+        ProgramState refState2 = new ProgramState(
+                new ExecutionStack<>(),
+                new SymbolTable<>(),
+                new Output<>(),
+                new FileTable<>(),
+                new HeapRef<>(),
+                ref2
+        );
+
+        RepositoryInterface repo8 = new Repository("ref2.txt");
+        repo8.addProgramState(refState2);
+        Controller ctr8 = new Controller(repo8);
+
+        //Ref int v;new(v,20);print(rH(v)); wH(v,30);print(rH(v)+5);
+
+        Statement ref3 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new RefType(new IntType())),
+                new CompoundStatement(
+                        new NewStatement(
+                                "v",
+                                new ValueExpression(new IntegerValue(20))
+                        ),
+                        new CompoundStatement(
+                                new PrintStatement(new ReadingHeapExpression(new VariableExpression("v"))),
+                                new CompoundStatement(
+                                        new WritingHeapStatement("v", new ValueExpression(new IntegerValue(30))),
+                                        new PrintStatement(
+                                                new ArithmeticExpression(
+                                                        new ReadingHeapExpression(new VariableExpression("v")),
+                                                        new ValueExpression(new IntegerValue(5)),
+                                                        1
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+
+        ProgramState refState3 = new ProgramState(
+                new ExecutionStack<>(),
+                new SymbolTable<>(),
+                new Output<>(),
+                new FileTable<>(),
+                new HeapRef<>(),
+                ref3
+        );
+
+        RepositoryInterface repo9 = new Repository("ref3.txt");
+        repo9.addProgramState(refState3);
+        Controller ctr9 = new Controller(repo9);
+
+        //Ref int v;new(v,20);Ref Ref int a; new(a,v); new(v,30);print(rH(rH(a)))
+        Statement ref4 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new RefType(new IntType())),
+                new CompoundStatement(
+                        new NewStatement(
+                                "v",
+                                new ValueExpression(new IntegerValue(20))
+                        ),
+                        new CompoundStatement(
+                                new VariableDeclarationStatement("a", new RefType(new RefType( new IntType()))),
+                                new CompoundStatement(
+                                        new NewStatement("a", new VariableExpression("v")),
+                                        new CompoundStatement(
+                                                new NewStatement("v", new ValueExpression(new IntegerValue(30))),
+                                                new PrintStatement(new ReadingHeapExpression(new ReadingHeapExpression(new VariableExpression("a"))))
+                                        )
+                                )
+                        )
+                )
+        );
+
+        ProgramState refState4 = new ProgramState(
+                new ExecutionStack<>(),
+                new SymbolTable<>(),
+                new Output<>(),
+                new FileTable<>(),
+                new HeapRef<>(),
+                ref4
+        );
+
+        RepositoryInterface repo10 = new Repository("ref4.txt");
+        repo10.addProgramState(refState4);
+        Controller ctr10 = new Controller(repo10);
         // Menu setup
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
@@ -250,6 +449,11 @@ public class Interpreter {
         menu.addCommand(new RunExampleCommand("3", ex3.toString(), ctr3));
         menu.addCommand(new RunExampleCommand("4", ex4.toString(), ctr4));
         menu.addCommand(new RunExampleCommand("5", ex5.toString(), ctr5));
+        menu.addCommand(new RunExampleCommand("6", ex6.toString(), ctr6));
+        menu.addCommand(new RunExampleCommand("7", ref1.toString(), ctr7));
+        menu.addCommand(new RunExampleCommand("8", ref2.toString(), ctr8));
+        menu.addCommand(new RunExampleCommand("9", ref3.toString(), ctr9));
+        menu.addCommand(new RunExampleCommand("10", ref4.toString(), ctr10));
         menu.show();
 
     }

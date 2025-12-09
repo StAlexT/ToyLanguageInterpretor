@@ -3,6 +3,7 @@ package model.type;
 import model.value.IntegerValue;
 import model.value.Value;
 
+
 public class IntType implements Type{
 
     public boolean equals(Object another){

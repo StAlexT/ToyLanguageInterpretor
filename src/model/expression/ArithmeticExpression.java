@@ -2,6 +2,7 @@ package model.expression;
 
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
+import model.state.HeapRefInterface;
 import model.type.IntType;
 import model.value.IntegerValue;
 import model.value.Value;
@@ -18,11 +19,11 @@ public class ArithmeticExpression implements Expression{
     }
 
     @Override
-    public Value eval(SymbolTableInterface<String, Value> table) throws ToyLanguageException {
+    public Value eval(SymbolTableInterface<String, Value> table, HeapRefInterface<Integer, Value> heap) throws ToyLanguageException {
         Value val1, val2;
-        val1 = exp1.eval(table);
+        val1 = exp1.eval(table, heap);
         if (val1.getType().equals(new IntType())) {
-            val2 = exp2.eval(table);
+            val2 = exp2.eval(table, heap);
             if (val2.getType().equals(new IntType())) {
                 IntegerValue integerValue1 = (IntegerValue) val1;
                 IntegerValue integerValue2 = (IntegerValue) val2;

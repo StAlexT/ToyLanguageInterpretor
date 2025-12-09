@@ -1,12 +1,10 @@
 package model.statement;
 import model.exception.ToyLanguageException;
 import model.state.ProgramState;
-import model.type.BoolType;
-import model.type.IntType;
-import model.type.StringType;
-import model.type.Type;
+import model.type.*;
 import model.value.BooleanNumber;
 import model.value.IntegerValue;
+import model.value.RefValue;
 import model.value.StringValue;
 
 public class VariableDeclarationStatement implements Statement{
@@ -28,6 +26,8 @@ public class VariableDeclarationStatement implements Statement{
             state.getSymbolTable().add(name, new BooleanNumber(false));
         else if (type.equals(new StringType())) {
             state.getSymbolTable().add(name, new StringValue(""));
+        } else if( type instanceof RefType refType){
+            state.getSymbolTable().add(name, refType.defaultValue());
         }
         return state;
     }

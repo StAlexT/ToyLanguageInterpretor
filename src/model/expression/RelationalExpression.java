@@ -2,6 +2,7 @@ package model.expression;
 
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
+import model.state.HeapRefInterface;
 import model.type.IntType;
 import model.value.BooleanNumber;
 import model.value.IntegerValue;
@@ -18,9 +19,9 @@ public class RelationalExpression implements Expression {
     }
 
     @Override
-    public Value eval(SymbolTableInterface<String, Value> table) throws ToyLanguageException {
-        Value v1 = e1.eval(table);
-        Value v2 = e2.eval(table);
+    public Value eval(SymbolTableInterface<String, Value> table, HeapRefInterface<Integer, Value> heap) throws ToyLanguageException {
+        Value v1 = e1.eval(table, heap);
+        Value v2 = e2.eval(table, heap);
 
         if (!(v1.getType() instanceof IntType) || !(v2.getType() instanceof IntType))
             throw new ToyLanguageException("Both operands must be integers");

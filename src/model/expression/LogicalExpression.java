@@ -2,6 +2,7 @@ package model.expression;
 
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
+import model.state.HeapRefInterface;
 import model.type.BoolType;
 import model.value.BooleanNumber;
 import model.value.Value;
@@ -18,11 +19,11 @@ public class LogicalExpression implements Expression{
     }
 
     @Override
-    public Value eval(SymbolTableInterface<String, Value> table) throws ToyLanguageException {
+    public Value eval(SymbolTableInterface<String, Value> table, HeapRefInterface<Integer, Value> heap) throws ToyLanguageException {
         Value val1, val2;
-        val1 = expression1.eval(table);
+        val1 = expression1.eval(table, heap);
         if(val1.getType().equals(new BoolType())){
-            val2 = expression2.eval(table);
+            val2 = expression2.eval(table, heap);
             if (val2.getType().equals(new BoolType())){
                 BooleanNumber booleanNumber1 = (BooleanNumber) val1;
                 BooleanNumber booleanNumber2 = (BooleanNumber) val2;

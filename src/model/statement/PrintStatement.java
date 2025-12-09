@@ -17,7 +17,7 @@ public class PrintStatement implements Statement{
 
     @Override
     public ProgramState execute(ProgramState state) {
-        Value value = expression.eval(state.getSymbolTable());
+        Value value = expression.eval(state.getSymbolTable(), state.getHeap());
         state.getOutput().add(value);
         return state;
     }

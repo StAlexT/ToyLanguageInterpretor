@@ -36,20 +36,25 @@ public class Repository implements RepositoryInterface{
     public void logProgramState(ProgramState state) throws ToyLanguageException{
         try(PrintWriter logFile = new PrintWriter(new BufferedWriter(new FileWriter(pathFile, true))))
         {
-            logFile.println("ExeStack:");
 
-            List<Statement> stackElements = state.getStack().getAll();
-            for (int i = stackElements.size() - 1; i >= 0; i--) {
-                logFile.println(stackElements.get(i).toString());
-            }
+            logFile.println(state.getStack().toString());
+//            logFile.println("ExeStack:");
+//            List<Statement> stackElements = state.getStack().getAll();
+//            for (int i = stackElements.size() - 1; i >= 0; i--) {
+//                logFile.println(stackElements.get(i).toString());
+//            }
 
-            logFile.println("SymTable:");
-            for (Map.Entry<String, Value> entry : state.getSymbolTable().getAll().entrySet())
-                logFile.println(entry.getKey() + " --> " + entry.getValue().toString());
+            logFile.println(state.getSymbolTable().toString());
+//            logFile.println("SymTable:");
+//            for (Map.Entry<String, Value> entry : state.getSymbolTable().getAll().entrySet())
+//                logFile.println(entry.getKey() + " --> " + entry.getValue().toString());
 
-            logFile.println("Out:");
-            for (Value val : state.getOutput().getAll())
-                logFile.println(val.toString());
+            logFile.println(state.getHeap().toString());
+
+            logFile.println(state.getOutput().toString());
+//            logFile.println("Out:");
+//            for (Value val : state.getOutput().getAll())
+//                logFile.println(val.toString());
 
             logFile.println("FileTable:");
             if (state.getFileTable() == null) {
@@ -60,6 +65,13 @@ public class Repository implements RepositoryInterface{
                 for (Map.Entry<StringValue, BufferedReader> entry : state.getFileTable().getAll().entrySet())
                     logFile.println(entry.getKey().getVal() + " -> open");
             }
+
+//            logFile.println("Ref Table: ");
+//            for (Map.Entry<Integer, Value> entry : state.getRefTable().getAll().entrySet())
+//                logFile.println(entry.getKey() + "-->" + entry.getValue().toString());
+
+
+
             logFile.println("----------------------------------------------------");
         }
         catch (IOException e) {

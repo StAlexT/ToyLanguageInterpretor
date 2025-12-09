@@ -18,7 +18,7 @@ public class CloseReadFileStatement implements Statement{ //closes the file and 
 
     @Override
     public ProgramState execute(ProgramState state) throws ToyLanguageException {
-        Value val = expression.eval(state.getSymbolTable());
+        Value val = expression.eval(state.getSymbolTable(), state.getHeap());
         if (!(val instanceof StringValue))
             throw new ToyLanguageException("Expression is not a string value");
 

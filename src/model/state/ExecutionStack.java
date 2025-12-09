@@ -34,9 +34,9 @@ public class ExecutionStack<T> implements ExecutionStackInterface<T> {
 
     @Override
     public String toString(){
-        StringBuilder stringBuilder = new StringBuilder("Execution stack:");
+        StringBuilder stringBuilder = new StringBuilder("Execution stack:\n");
         for(T statement : execStack){
-            stringBuilder.append(statement).append("\n\n");
+            stringBuilder.append(statement).append("\n");
         }
         return stringBuilder.toString();
     }

@@ -22,7 +22,7 @@ public class AssignmentStatement implements Statement{
         SymbolTableInterface<String, Value> symbolTable = state.getSymbolTable();
 
         if (symbolTable.isDefined(expName)) {
-            Value val = expression.eval(symbolTable);
+            Value val = expression.eval(symbolTable, state.getHeap());
             Type typeId = symbolTable.getValue(expName).getType();
             if (val.getType().equals(typeId))
                 symbolTable.update(expName, val);

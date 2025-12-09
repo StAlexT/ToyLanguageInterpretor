@@ -11,7 +11,7 @@ public class Output<T1> implements OutputInterface<T1>{
 
     @Override
     public String toString(){
-        StringBuilder stringBuilder = new StringBuilder("Output list: ");
+        StringBuilder stringBuilder = new StringBuilder("Output list: \n");
         for(T1 elem : outputList){
             stringBuilder.append(elem).append("\n");
         }
