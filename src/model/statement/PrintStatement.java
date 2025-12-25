@@ -1,7 +1,10 @@
 package model.statement;
 
+import model.exception.ToyLanguageException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTableInterface;
+import model.type.Type;
 import model.value.Value;
 
 public class PrintStatement implements Statement{
@@ -20,6 +23,12 @@ public class PrintStatement implements Statement{
         Value value = expression.eval(state.getSymbolTable(), state.getHeap());
         state.getOutput().add(value);
         return state;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        expression.typeCheck(typeEnv);
+        return typeEnv;
     }
 
     @Override

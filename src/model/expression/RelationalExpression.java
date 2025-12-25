@@ -3,7 +3,9 @@ package model.expression;
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
+import model.type.BoolType;
 import model.type.IntType;
+import model.type.Type;
 import model.value.BooleanNumber;
 import model.value.IntegerValue;
 import model.value.Value;
@@ -38,6 +40,20 @@ public class RelationalExpression implements Expression {
             case ">=" -> new BooleanNumber(n1 >= n2);
             default -> throw new ToyLanguageException("Invalid relational operator: " + operator);
         };
+    }
+
+    @Override
+    public Type typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type type1, type2;
+        type1 = e1.typeCheck(typeEnv);
+        type2 = e2.typeCheck(typeEnv);
+        if(type1.equals(new IntType()))
+            if (type2.equals(new IntType()))
+                return new IntType();
+            else
+                throw new ToyLanguageException("second operand not integer");
+        else
+            throw new ToyLanguageException("first operand not integer");
     }
 
     @Override

@@ -28,6 +28,13 @@ public class ExecutionStack<T> implements ExecutionStackInterface<T> {
     }
 
     @Override
+    public T peek() {
+        if(execStack.isEmpty()) throw new RuntimeException("Empty stack");
+        return execStack.get(execStack.size() - 1); // last element is top of stack
+    }
+
+
+    @Override
     public List<T> getAll() {
         return new ArrayList<>(execStack);
     }

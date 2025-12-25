@@ -4,6 +4,7 @@ import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
 import model.type.IntType;
+import model.type.Type;
 import model.value.IntegerValue;
 import model.value.Value;
 
@@ -46,6 +47,21 @@ public class ArithmeticExpression implements Expression{
             } else
                 throw new ToyLanguageException("second operand is not an integer");
         }
+        else
+            throw new ToyLanguageException("first operand is not an integer");
+    }
+
+    @Override
+    public Type typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type type1, type2;
+        type1 = exp1.typeCheck(typeEnv);
+        type2 = exp2.typeCheck(typeEnv);
+        if(type1.equals(new IntType()))
+            if (type2.equals(new IntType()))
+                return new IntType();
+            else {
+                throw new ToyLanguageException("second operand is not an integer");
+            }
         else
             throw new ToyLanguageException("first operand is not an integer");
     }

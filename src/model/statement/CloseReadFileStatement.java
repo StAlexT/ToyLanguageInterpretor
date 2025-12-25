@@ -3,6 +3,8 @@ package model.statement;
 import model.exception.ToyLanguageException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTableInterface;
+import model.type.Type;
 import model.value.StringValue;
 import model.value.Value;
 
@@ -33,6 +35,12 @@ public class CloseReadFileStatement implements Statement{ //closes the file and 
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        expression.typeCheck(typeEnv);
+        return typeEnv;
     }
 
     @Override

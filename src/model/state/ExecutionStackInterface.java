@@ -6,4 +6,6 @@ public interface ExecutionStackInterface<T> {
     T pop();
     boolean isEmpty();
     List<T> getAll();
+     T peek();
+
 }

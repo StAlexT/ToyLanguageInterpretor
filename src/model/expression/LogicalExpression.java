@@ -4,6 +4,7 @@ import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
 import model.type.BoolType;
+import model.type.Type;
 import model.value.BooleanNumber;
 import model.value.Value;
 
@@ -40,6 +41,20 @@ public class LogicalExpression implements Expression{
             else
                 throw new ToyLanguageException("second operand is not boolean");
         }
+        else
+            throw new ToyLanguageException("first operand is not boolean");
+    }
+
+    @Override
+    public Type typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type type1, type2;
+        type1 = expression1.typeCheck(typeEnv);
+        type2 = expression2.typeCheck(typeEnv);
+        if(type1.equals(new BoolType()))
+            if (type2.equals(new BoolType()))
+                return new BoolType();
+            else
+                throw new ToyLanguageException("second operand is not boolean");
         else
             throw new ToyLanguageException("first operand is not boolean");
     }

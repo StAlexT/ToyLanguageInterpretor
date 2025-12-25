@@ -1,4 +1,6 @@
 package model.state;
+import model.type.Type;
+
 import java.util.Map;
 
 public interface SymbolTableInterface<T2, T3>{
@@ -8,6 +10,7 @@ public interface SymbolTableInterface<T2, T3>{
     T3 getValue(T2 id);
     void update(T2 id, T3 new_elem);
     boolean valueExists(T3 elem);
+    SymbolTableInterface<T2, T3> deepCopy();
 
     Map<T2, T3> getAll();
 }

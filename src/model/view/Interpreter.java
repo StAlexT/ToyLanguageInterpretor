@@ -442,6 +442,47 @@ public class Interpreter {
         repo10.addProgramState(refState4);
         Controller ctr10 = new Controller(repo10);
         // Menu setup
+// Failing Examples for typeCheck
+        Statement bad1 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new IntType()),
+                new AssignmentStatement("v", new ValueExpression(new BooleanNumber(true)))
+        );
+
+        Statement bad2 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new IntType()),
+                new PrintStatement(new ReadingHeapE11xpression(new VariableExpression("v")))
+        );
+
+        Statement bad5 = new CompoundStatement(
+                new VariableDeclarationStatement("v", new IntType()),
+                new IfStatement(
+                        new VariableExpression("v"), // int instead of bool
+                        new PrintStatement(new ValueExpression(new IntegerValue(1))),
+                        new PrintStatement(new ValueExpression(new IntegerValue(0)))
+                )
+        );
+
+        Statement bad6 = new CompoundStatement(
+                new VariableDeclarationStatement("r", new RefType(new IntType())),
+                new NewStatement("r", new ValueExpression(new BooleanNumber(false)))
+        );
+
+// Add to Repository and Controller
+        RepositoryInterface repoBad1 = new Repository("bad1.txt");
+        repoBad1.addProgramState(new ProgramState(new ExecutionStack<>(), new SymbolTable<>(), new Output<>(), new FileTable<>(), new HeapRef<>(), bad1));
+        RepositoryInterface repoBad2 = new Repository("bad2.txt");
+        repoBad2.addProgramState(new ProgramState(new ExecutionStack<>(), new SymbolTable<>(), new Output<>(), new FileTable<>(), new HeapRef<>(), bad2));
+         RepositoryInterface repoBad5 = new Repository("bad5.txt");
+         repoBad5.addProgramState(new ProgramState(new ExecutionStack<>(), new SymbolTable<>(), new Output<>(), new FileTable<>(), new HeapRef<>(), bad5));
+        RepositoryInterface repoBad6 = new Repository("bad6.txt");
+        repoBad6.addProgramState(new ProgramState(new ExecutionStack<>(), new SymbolTable<>(), new Output<>(), new FileTable<>(), new HeapRef<>(), bad6));
+
+        Controller ctrBad1 = new Controller(repoBad1);
+        Controller ctrBad2 = new Controller(repoBad2);
+
+        Controller ctrBad5 = new Controller(repoBad5);
+        Controller ctrBad6 = new Controller(repoBad6);
+
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
         menu.addCommand(new RunExampleCommand("1", ex1.toString(), ctr1));
@@ -454,6 +495,11 @@ public class Interpreter {
         menu.addCommand(new RunExampleCommand("8", ref2.toString(), ctr8));
         menu.addCommand(new RunExampleCommand("9", ref3.toString(), ctr9));
         menu.addCommand(new RunExampleCommand("10", ref4.toString(), ctr10));
+        menu.addCommand(new RunExampleCommand("11", bad1.toString(), ctrBad1));
+        menu.addCommand(new RunExampleCommand("12", bad2.toString(), ctrBad2));
+        menu.addCommand(new RunExampleCommand("13", bad5.toString(), ctrBad5));
+        menu.addCommand(new RunExampleCommand("14", bad6.toString(), ctrBad6));
+
         menu.show();
 
     }

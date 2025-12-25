@@ -4,6 +4,7 @@ import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
 import model.type.RefType;
+import model.type.Type;
 import model.value.RefValue;
 import model.value.Value;
 
@@ -29,6 +30,17 @@ public class ReadingHeapExpression implements Expression{
         }
         else
             throw new ToyLanguageException("Value must be RefValue");
+    }
+
+    @Override
+    public Type typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type type = expression.typeCheck(typeEnv);
+        if (type instanceof RefType){
+            RefType ref = (RefType) type;
+            return ref.getInner();
+        }
+        else
+            throw new ToyLanguageException("the rH argument is not a RefType");
     }
 
     @Override

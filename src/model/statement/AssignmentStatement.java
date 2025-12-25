@@ -36,6 +36,19 @@ public class AssignmentStatement implements Statement{
     }
 
     @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type typeVar = typeEnv.getValue(expName);
+        if(typeVar == null)
+            throw new ToyLanguageException("Variable " + expName + " not declared");
+
+        Type typeExp = expression.typeCheck(typeEnv);
+        if(!typeVar.equals(typeExp))
+            throw new ToyLanguageException("Assignment: right and left have different types");
+
+        return typeEnv;
+    }
+
+    @Override
     public Statement deepCopy() {
         return new AssignmentStatement(expName, expression.deepCopy());
     }

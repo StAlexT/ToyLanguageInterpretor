@@ -43,6 +43,17 @@ public class WritingHeapStatement implements Statement {
     }
 
     @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type typeVar = typeEnv.getValue(variableName);
+        Type typeExp = expression.typeCheck(typeEnv);
+        if(typeVar.equals(new RefType(typeExp)))
+            return typeEnv;
+        else
+            throw new ToyLanguageException("wH stmt: Type mismatched");
+
+    }
+
+    @Override
     public Statement deepCopy() {
         return new WritingHeapStatement(variableName, expression.deepCopy());
     }

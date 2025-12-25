@@ -3,6 +3,7 @@ package model.expression;
 import model.exception.ToyLanguageException;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
+import model.type.Type;
 import model.value.Value;
 
 public class ValueExpression implements Expression{
@@ -15,6 +16,11 @@ public class ValueExpression implements Expression{
     @Override
     public Value eval(SymbolTableInterface<String, Value> table, HeapRefInterface<Integer, Value> heap) throws ToyLanguageException {
         return value;
+    }
+
+    @Override
+    public Type typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        return value.getType();
     }
 
     @Override

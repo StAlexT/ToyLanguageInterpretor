@@ -6,6 +6,7 @@ import model.state.ProgramState;
 import model.state.SymbolTableInterface;
 import model.state.HeapRefInterface;
 import model.type.RefType;
+import model.type.Type;
 import model.value.RefValue;
 import model.value.Value;
 
@@ -41,6 +42,16 @@ public class NewStatement implements Statement{
         symbolTable.update(variableName, new RefValue(newAddr, varRef.getInner()));
 
         return state;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type typeVar = typeEnv.getValue(variableName);
+        Type typeExp = expression.typeCheck(typeEnv);
+        if(typeVar.equals(new RefType(typeExp)))
+            return typeEnv;
+        else
+            throw new ToyLanguageException("New stmt: right and left have diff types");
     }
 
     @Override

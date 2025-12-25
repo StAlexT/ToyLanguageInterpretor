@@ -3,7 +3,9 @@ package model.statement;
 import model.exception.ToyLanguageException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTableInterface;
 import model.type.IntType;
+import model.type.Type;
 import model.value.IntegerValue;
 import model.value.StringValue;
 import model.value.Value;
@@ -59,6 +61,13 @@ public class ReadFileStatement implements Statement { //reads one line of a file
         }
 
         return null;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        typeEnv.getValue(variableName);
+        expression.typeCheck(typeEnv);
+        return typeEnv;
     }
 
     @Override

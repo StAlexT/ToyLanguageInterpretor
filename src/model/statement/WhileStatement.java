@@ -3,8 +3,13 @@ package model.statement;
 import model.exception.ToyLanguageException;
 import model.expression.Expression;
 import model.state.ProgramState;
+import model.state.SymbolTableInterface;
+import model.type.BoolType;
+import model.type.Type;
 import model.value.BooleanNumber;
 import model.value.Value;
+
+import java.awt.*;
 
 public class WhileStatement implements Statement{
 
@@ -30,6 +35,17 @@ public class WhileStatement implements Statement{
         }
 
         return state;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        Type typeExp = condition.typeCheck(typeEnv);
+        if(typeExp.equals(new BoolType())) {
+            statement.typeCheck(typeEnv.deepCopy());
+            return typeEnv;
+        }
+        else
+            throw new ToyLanguageException("The condition of While is not type bool");
     }
 
     @Override

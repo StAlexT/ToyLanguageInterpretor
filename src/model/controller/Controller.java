@@ -1,8 +1,10 @@
 package model.controller;
 import model.exception.ToyLanguageException;
+import model.repository.Repository;
 import model.repository.RepositoryInterface;
 import model.state.ExecutionStackInterface;
 import model.state.ProgramState;
+import model.state.SymbolTable;
 import model.statement.Statement;
 import model.value.RefValue;
 import model.value.Value;
@@ -42,9 +44,12 @@ public class Controller implements ControllerInterface{
     }
 //for the exception from exemple 10 -> garbage collector treats 1 as “invalid” because nothing in the symbol table currently points to it (v points to 3).
 
+
     @Override
     public void allSteps() throws ToyLanguageException, IOException {
         ProgramState programState = repository.getCurrentProgramState();
+        Statement program = programState.getStack().peek();
+        program.typeCheck(new SymbolTable<>());
         repository.logProgramState(programState);
         if (programState==null)
             throw new ToyLanguageException("No Program State");
@@ -54,6 +59,11 @@ public class Controller implements ControllerInterface{
             programState.getHeap().setContent(unsafeGarbageCollector(getAddrFromSymTable(programState.getSymbolTable().getAll().values()), programState.getHeap().getAll()));
             repository.logProgramState(programState);
         }
+    }
+
+    @Override
+    public RepositoryInterface getRepo() {
+        return repository;
     }
 
 

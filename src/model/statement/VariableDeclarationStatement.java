@@ -1,6 +1,7 @@
 package model.statement;
 import model.exception.ToyLanguageException;
 import model.state.ProgramState;
+import model.state.SymbolTableInterface;
 import model.type.*;
 import model.value.BooleanNumber;
 import model.value.IntegerValue;
@@ -30,6 +31,12 @@ public class VariableDeclarationStatement implements Statement{
             state.getSymbolTable().add(name, refType.defaultValue());
         }
         return state;
+    }
+
+    @Override
+    public SymbolTableInterface<String, Type> typeCheck(SymbolTableInterface<String, Type> typeEnv) throws ToyLanguageException {
+        typeEnv.add(name, type);
+        return typeEnv;
     }
 
     @Override

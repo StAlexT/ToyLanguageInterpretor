@@ -1,5 +1,7 @@
 package model.state;
 
+import model.type.Type;
+
 import java.util.*;
 
 public class SymbolTable<T2, T3> implements SymbolTableInterface<T2, T3>{
@@ -42,6 +44,14 @@ public class SymbolTable<T2, T3> implements SymbolTableInterface<T2, T3>{
             return true;
         return false;
     }
+
+    @Override
+    public SymbolTableInterface<T2, T3> deepCopy() {
+        SymbolTable<T2, T3> copy = new SymbolTable<>();
+        copy.symbolTable = new Hashtable<>(this.symbolTable); // shallow copy of internal table
+        return copy;
+    }
+
 
     @Override
     public Map<T2, T3> getAll() {
