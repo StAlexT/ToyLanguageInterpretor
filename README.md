@@ -1,4 +1,4 @@
-# Toy Language Interppretor
+# Toy Language Interpretor
 
 ![Language](https://img.shields.io/badge/language-Java-007396?style=flat-square)
 ![University Project](https://img.shields.io/badge/type-University%20Project-blue?style=flat-square)
