@@ -6,7 +6,7 @@
 
 Toy Language Interpreter is a Java-based interpreter implementation. It executes programs consisting of statements and expressions, managing program execution through multiple concurrent program states with features like semaphores, locks, and cyclic barriers. This project demonstrates fundamental interpreter design patterns and concurrent programming concepts.
 
-## Simple Overview of the base functionalities:
+## Simple overview of the base functionalities:
 
 A program (Prg) in this language consists of one single statement (Stmt).
 
